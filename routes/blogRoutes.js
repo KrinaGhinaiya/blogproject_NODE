@@ -3,14 +3,12 @@ const path = require('path');
 const app = express();
 const multer = require('multer');
 const blogmodel= require("../model/blogModel")
-const passport = require("passport");
+
 const routes = express.Router();
 
 const { loginPage, registerPage, dashboardPage, registerrecord, loginrecord, logout, blog, eat, relax, add, addRecord, view, deleteData, editData, updateRecord } = require('../controller/blogController');
 
 
-// blogRoutes.get("/login",  passport.validateUser, addAdminPage)
-// blogRoutes.get("/view", passport.validateUser, viewAllAdmins);
 
 routes.get('/' , loginPage);
 routes.get('/register',registerPage);

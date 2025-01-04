@@ -8,14 +8,17 @@ const registerPage = (req,res) =>{
 }
 
 const loginPage = (req,res) =>{
-    if(req.isAuthenticated()){
-        return res.redirect("/dashboard");
+    if(req.cookies['auth']){
+        return res.redirect('/dashboard')
     }
-    return res.render("login");
+    return res.render('login')
 }
 
 const dashboardPage = (req,res) =>{
-    return res.render("dashboard");
+    if(!req.cookies['auth']){
+        return res.redirect('/')
+    }
+    return res.render('dashboard');
 }
 
 const registerrecord = async (req,res) =>{
@@ -56,53 +59,33 @@ const loginrecord = async (req,res) =>{
 };
 
 const logout = (req,res) => {
-    req.session.destroy((err)=>{
-        if(err){
-            console.log(err);
-        }
-        return res.redirect("/");
-    })
+    return res.clearCookie('auth').redirect('/')
 }
 
 const blog = (req,res) =>{
-    // if(!req.cookies['auth']){
-    //     return res.redirect('/')
-    // }
-    // return res.render('blog')
-    if(req.isAuthenticated()){
-        return res.redirect("/");
+    if(!req.cookies['auth']){
+        return res.redirect('/')
     }
-    return res.render("blog");
+    return res.render('blog')
 }
 
 const eat = (req,res) =>{
-    // if(!req.cookies['auth']){
-    //     return res.redirect('/')
-    // }
-    // return res.render('eat')
-    if(req.isAuthenticated()){
-        return res.redirect("/");
+    if(!req.cookies['auth']){
+        return res.redirect('/')
     }
-    return res.render("eat");
+    return res.render('eat')
 }
 
 const relax = (req,res) =>{
-    // if(!req.cookies['auth']){
-    //     return res.redirect('/')
-    // }
-    // return res.render('relax')
-    if(req.isAuthenticated()){
-        return res.redirect("/");
+    if(!req.cookies['auth']){
+        return res.redirect('/')
     }
-    return res.render("relax");
+    return res.render('relax')
 }
 
 const add = (req,res) =>{
-    // if(!req.cookies['auth']){
-    //     return res.redirect('/')
-    // }
-    if(req.isAuthenticated()){
-        return res.redirect("/");
+    if(!req.cookies['auth']){
+        return res.redirect('/')
     }
     console.log("Add route accessed"); 
      
@@ -151,17 +134,8 @@ const addRecord = async(req,res) =>{
 const view= async (req, res)=>{
     try {
         let blogs = await blogModel.find({});
-        const category = req.query.category;
-        let allblog;
-        if(category && category!=='All')
-        {
-            allblog=await blogModel.find({category})
-        }
-        else{
-            allblog=await blogModel.find()
-        }
-
-        return res.render('view',{blogs: allblog })
+        return res.render('view',{blogs
+        })
         
     } catch (error) {
         console.log(error);
@@ -234,6 +208,13 @@ const updateRecord = async(req,res) => {
         return res.redirect('back');
     }
 }
+
+
+
+
+
+
+
 
 module.exports = {
     registerPage ,loginPage , dashboardPage , registerrecord , loginrecord , logout , blog , eat , relax , add , addRecord , view , deleteData , editData , updateRecord

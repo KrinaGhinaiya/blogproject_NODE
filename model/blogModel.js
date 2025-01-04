@@ -11,6 +11,10 @@ const blogSchema =  mongoose.Schema({
         type:String,
         require:true,
       },
+      // date:{
+      //   type:String,
+      //   require:true,
+      // },
       content:{
         type:String,
         require:true,
